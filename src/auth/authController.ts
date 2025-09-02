@@ -28,4 +28,26 @@ const register = async (req: Request, res: Response) => { //req.body
 
 }
 
-export default { register }
+const login = async (req: Request, res: Response) => { //req.body
+    try {
+
+        const userData = req.body
+
+        const isEmailValid = validator.isEmail(userData.email)
+
+        if (!isEmailValid || !userData.email) {
+            return res.status(400).json({ message: 'Email must be valid' })
+        }
+
+        if (!userData.password) {
+            return res.status(400).json({ message: 'Password is required' })
+        }
+
+        const response = await service.login(userData)
+        res.status(200).json(response)
+    } catch (error) {
+        res.status(401).json({ message: error })
+    }
+}
+
+export default { register, login }
