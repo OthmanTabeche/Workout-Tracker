@@ -1,13 +1,6 @@
-import express from "express";
+import config from './utils/config.ts';
+import app from './app.ts'
 
-const app = express()
-
-const PORT = 3000;
-
-app.get("/", (req, res) => {
-    res.json("Hello, Workout Tracker!");
-});
-
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-}); 
+app.listen(config.PORT, () => {
+    console.log(`Server running on port ${config.PORT}`)
+})

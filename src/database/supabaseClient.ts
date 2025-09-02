@@ -1,4 +1,4 @@
-import config from "../config.js";
+import config from "../utils/config.ts";
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = config.supabaseUrl
