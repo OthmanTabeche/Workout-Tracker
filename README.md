@@ -11,16 +11,16 @@
 - [X] Inicializar cliente de Supabase
 
 ## 📊 FASE 2: DISEÑO DE BASE DE DATOS EN SUPABASE
-- [ ] Acceder al SQL Editor de Supabase
-- [ ] Crear tabla `users` con campos necesarios
-- [ ] Crear tabla `exercises` con categorías y grupos musculares
-- [ ] Crear tabla `workout_plans` relacionada con users
-- [ ] Crear tabla `workout_exercises` (relación many-to-many)
-- [ ] Crear tabla `scheduled_workouts` para programación
-- [ ] Crear tabla `workout_sessions` para tracking
-- [ ] Configurar relaciones y foreign keys
-- [ ] Crear índices para optimizar consultas
-- [ ] Poblar tabla exercises con datos semilla (INSERT statements)
+- [X] Acceder al SQL Editor de Supabase
+- [X] Crear tabla `users` con campos necesarios
+- [X] Crear tabla `exercises` con categorías y grupos musculares
+- [X] Crear tabla `workout_plans` relacionada con users
+- [X] Crear tabla `workout_exercises` (relación many-to-many)
+- [X] Crear tabla `scheduled_workouts` para programación
+- [X] Crear tabla `workout_sessions` para tracking
+- [X] Configurar relaciones y foreign keys
+- [X] Crear índices para optimizar consultas
+- [X] Poblar tabla exercises con datos semilla (INSERT statements)
 
 ## 🔐 FASE 3: SISTEMA DE AUTENTICACIÓN MANUAL
 - [ ] Implementar registro de usuarios (INSERT en tabla users)
