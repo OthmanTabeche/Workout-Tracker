@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import authServices from './auth.services.js'
+import authServices from './auth.services.ts'
 import validator from 'validator'
 
 // POST /auth/register
@@ -27,7 +27,7 @@ const register = async (req: Request, res: Response) =>  { // req.body.{name, em
         res.status(201).json(result)
 
     } catch (error) {
-        res.status(400).json({ message: error })
+        res.status(400).json({ message: error instanceof Error ? error.message : 'An error occurred' })
     }
 }
 
@@ -53,7 +53,7 @@ const signIn = async (req: Request, res: Response) =>  { // req.body.{email, pas
         res.status(200).json(result)
         
     } catch (error) {
-        res.status(400).json({ message: error })
+        res.status(400).json({ message: error instanceof Error ? error.message : 'An error occurred' })
     }
 }
 

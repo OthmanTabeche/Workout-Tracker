@@ -1,8 +1,8 @@
-import supabase from '../database/supabase.js'
+import supabase from '../database/supabase.ts'
 import bcrypt from 'bcrypt'
 const saltRounds = 10;
 import jsonwebtoken from 'jsonwebtoken'
-import config from '../utils/config.js';
+import config from '../utils/config.ts';
 
 interface Register {
     name: string
@@ -15,19 +15,18 @@ const register = async (data: Register) =>  { // req.body.{name, email, password
     const { name, email, password } = data
 
     const { data: existing } = await supabase
-        .from('user')
+        .from('users')
         .select('id')
-        .eq('email', email)
-        .single();
+        .eq('email', email);
 
-    if (existing) {
+    if (existing && existing.length > 0) {
         throw new Error("Email already registered");
     }
 
     const passwordHash = await bcrypt.hash(password, saltRounds)
 
     const {data: newUser, error: notRegistered} = await supabase
-        .from('user')
+        .from('users')
         .insert({name: name, email: email, password_hash: passwordHash})
         .select()
     
@@ -48,7 +47,7 @@ const signIn = async (data: SignIn) =>  { // req.body.{email, password}
     const {email, password} = data
 
     const {data: users, error} = await supabase
-        .from('user')
+        .from('users')
         .select('*')
         .eq('email', email)
     

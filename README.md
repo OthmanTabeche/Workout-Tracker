@@ -23,13 +23,12 @@
 - [X] Poblar tabla exercises con datos semilla (INSERT statements)
 
 ## 🔐 FASE 3: SISTEMA DE AUTENTICACIÓN MANUAL
-- [ ] Implementar registro de usuarios (INSERT en tabla users)
-- [ ] Hashear contraseñas con bcrypt antes de guardar
-- [ ] Implementar login verificando email/password
-- [ ] Crear y validar JWT tokens manualmente
-- [ ] Crear middleware de autenticación personalizado
-- [ ] Implementar logout (blacklist de tokens o expiración)
-- [ ] Validar que usuarios solo accedan a sus datos
+- [X] Implementar registro de usuarios (INSERT en tabla users)
+- [X] Hashear contraseñas con bcrypt antes de guardar
+- [X] Implementar login verificando email/password
+- [X] Crear y validar JWT tokens manualmente
+- [] Crear middleware de autenticación personalizado
+- [X] Validar que usuarios solo accedan a sus datos
 
 ## 🏋️ FASE 4: GESTIÓN DE ENTRENAMIENTOS
 - [ ] CRUD de planes de entrenamiento usando Supabase client
