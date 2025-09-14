@@ -12,29 +12,41 @@ interface Register {
 
 // POST /auth/register
 const register = async (data: Register) =>  { // req.body.{name, email, password}
-    const { name, email, password } = data
+    try {
+        const { name, email, password } = data
 
-    const { data: existing } = await supabase
-        .from('users')
-        .select('id')
-        .eq('email', email);
+        const { data: existing, error: checkError } = await supabase
+            .from('users')
+            .select('id')
+            .eq('email', email);
 
-    if (existing && existing.length > 0) {
-        throw new Error("Email already registered");
+        if (checkError) {
+            throw new Error(`Database error: ${checkError.message}`);
+        }
+
+        if (existing && existing.length > 0) {
+            throw new Error("Email already registered");
+        }
+
+        const passwordHash = await bcrypt.hash(password, saltRounds)
+
+        const {data: newUser, error: notRegistered} = await supabase
+            .from('users')
+            .insert({name: name, email: email, password_hash: passwordHash})
+            .select()
+        
+        if (notRegistered) {
+            throw new Error(notRegistered.message)
+        }
+
+        if (!newUser || newUser.length === 0) {
+            throw new Error("Failed to create user");
+        }
+
+        return {user: {id: newUser[0].id, name, email}}
+    } catch (error) {
+        throw error;
     }
-
-    const passwordHash = await bcrypt.hash(password, saltRounds)
-
-    const {data: newUser, error: notRegistered} = await supabase
-        .from('users')
-        .insert({name: name, email: email, password_hash: passwordHash})
-        .select()
-    
-    if (notRegistered) {
-        throw new Error(notRegistered.message)
-    }
-
-    return {user: {id: newUser[0].id, name, email}}
 }
 
 interface SignIn {
@@ -44,31 +56,43 @@ interface SignIn {
 
 // POST /auth/signin
 const signIn = async (data: SignIn) =>  { // req.body.{email, password}
-    const {email, password} = data
+    try {
+        const {email, password} = data
 
-    const {data: users, error} = await supabase
-        .from('users')
-        .select('*')
-        .eq('email', email)
-    
-    if (error || !users || users.length === 0) {
-        throw new Error(`Invalid credentials`)
-    }
+        const {data: users, error} = await supabase
+            .from('users')
+            .select('*')
+            .eq('email', email)
         
-    const user = users[0]
-    const isValid = await bcrypt.compare(password, user.password_hash)
+        if (error) {
+            throw new Error(`Database error: ${error.message}`)
+        }
 
-    if (!isValid) {
-        throw new Error(`Invalid credentials`)
+        if (!users || users.length === 0) {
+            throw new Error(`Invalid credentials`)
+        }
+            
+        const user = users[0]
+        const isValid = await bcrypt.compare(password, user.password_hash)
+
+        if (!isValid) {
+            throw new Error(`Invalid credentials`)
+        }
+
+        if (!config.JWT_SECRET) {
+            throw new Error('JWT secret not configured')
+        }
+
+        const token = jsonwebtoken.sign(
+            {id: user.id, email: user.email},
+            config.JWT_SECRET,
+            { expiresIn: '1h' }
+        )
+
+        return {user: {id: user.id, name: user.name, email: user.email}, token}
+    } catch (error) {
+        throw error;
     }
-
-    const token = jsonwebtoken.sign(
-        {id: user.id, email: user.email},
-        config.JWT_SECRET!,
-        { expiresIn: '1h' }
-    )
-
-    return {user: {id: user.id, name: user.name, email: user.email}, token}
 }
 
 export default {register, signIn}

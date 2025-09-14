@@ -19,8 +19,8 @@ const register = async (req: Request, res: Response) =>  { // req.body.{name, em
             return res.status(400).json({ message: 'Provide a valid email address' })
         }
 
-        if (!validator.isLength(password, { min: 6 })) {
-            return res.status(400).json({ message: 'Password must be at least 6 characters long' })
+        if (!validator.isLength(password, { min: 4 })) {
+            return res.status(400).json({ message: 'Password must be at least 4 characters long' })
         }
 
         const result = await authServices.register({name, email, password})
