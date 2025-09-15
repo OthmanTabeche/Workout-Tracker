@@ -1,10 +1,10 @@
 # Workout Tracker API - Required Endpoints
 
 ## Workout Management
+- **GET** `/workouts`
 - **POST** `/workouts` - Create workouts composed of multiple exercises  
 - **PUT** `/workouts/:id` - Update workouts and add comments  
 - **DELETE** `/workouts/:id` - Delete workouts  
-- **GET** `/workouts` - List active or pending workouts sorted by date and time  
 
 ## Exercise Data (Read-only catalog)
 - **GET** `/exercises` - List available exercises for creating workouts  
@@ -14,3 +14,5 @@
 
 ## Reports
 - **GET** `/reports` - Generate reports on past workouts and progress  
+
+### Test and final middleware (if I forget)
